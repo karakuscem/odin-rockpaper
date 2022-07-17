@@ -1,3 +1,4 @@
+// Select elements
 const playerScore = document.querySelector(".p-count");
 const computerScore = document.querySelector(".c-count");
 const rounds = document.querySelector(".rounds");
@@ -7,61 +8,53 @@ const scissorsBtn = document.querySelector(".scissors");
 const reloadBtn = document.querySelector(".reload");
 const computerSelected = document.querySelector(".c-selected");
 const result = document.querySelector(".result");
+const textChange = document.querySelector(".move");
 const chooseMove = document.querySelector(".move")
 const options = [rockBtn, paperBtn, scissorsBtn];
 
+// Define some variables
 let round = 10;
 let p_score = 0;
 let c_score = 0;
 
+// Count rounds
 function countRound() {
     round -= 1;
     rounds.textContent = `Rounds Left: ${round}`;
     return round;
 }
 
+// Make computer selects rock,paper or scissors randomly
 function computerPlay() {
-    const choice = ["rock", "paper", "scissors"]
-    const random = Math.floor(Math.random() * choice.length);
-    let selection;
-    if (random == 0) {
-        selection = "rock";
-    }
-    else if (random == 1) {
-        selection = "paper";
-    }
-    else if (random == 2) {
-        selection = "scissors";
-    }
+    const computerSelection = ["rock", "paper", "scissors"];
+    const chooseRandom = computerSelection[Math.floor(Math.random() * computerSelection.length)];
     computerSelected.style.display = "flex";
-    computerSelected.textContent = `Computer Selected: ${selection.toUpperCase()}`;
-    return (selection);
+    computerSelected.textContent = `Computer Selected: ${chooseRandom.toUpperCase()}`;
+    return (chooseRandom);
 }
-
+// End of the game, show replay button, game over text
 function endGame() {
     if (round === 0) {
         options.forEach(option => {
-            option.style.display = "none";
+            option.style.display = "none"
         })
     }
-
     chooseMove.textContent = "Game Over!";
     rounds.style.display = "none";
-
-    if (p_score > c_score) {
-        result.style.fontSize = '2rem';
-        result.innerText = 'You Won The Game'
-        result.style.color = 'blue';
+    if(p_score > c_score) {
+        result.style.fontSize = "2rem";
+        result.textContent = "You Won The Game";
+        result.style.color = "green";
     }
-    else if (p_score < c_score) {
-        result.style.fontSize = '2rem';
-        result.innerText = 'You Lost The Game';
-        result.style.color = 'red';
+    else if (c_score > p_score) {
+        result.style.fontSize = "2rem";
+        result.textContent = "You Lost The Game";
+        result.style.color = "red";
     }
     else {
-        result.style.fontSize = '2rem';
-        result.innerText = 'Tie';
-        result.style.color = 'white';
+        result.style.fontSize = "2rem";
+        result.textContent = "Tie";
+        result.style.color = "white";
     }
     computerSelected.style.display = "none";
     reloadBtn.textContent = "Restart";
@@ -71,6 +64,7 @@ function endGame() {
     })
 }
 
+// Make player and computer play round
 function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
@@ -116,8 +110,9 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
+// Function to play game
 function playGame() {
-    options.forEach(option => {
+        options.forEach(option => {
         option.addEventListener("click", function(){
             countRound();
             playRound(this.innerText, computerPlay());
